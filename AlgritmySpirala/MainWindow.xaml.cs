@@ -13,10 +13,9 @@ namespace AlgritmySpirala {
 
     public partial class MainWindow : Window {
         private double wallLength = 400;
-        private static double gap = 40;
+        private double gap = 10;
         private double startX = 200;
         private double startY = 200;
-        private double workingGap = gap / 2;
 
         public MainWindow() {
             InitializeComponent();
@@ -24,16 +23,16 @@ namespace AlgritmySpirala {
         }
 
         private void DrawSpiral(double currentX, double currentY, double length, int direction, int steps) {
-            if (length <= workingGap)
+            if (length <= gap)
                 return;
 
-            if (steps == 1) {
-                length += workingGap;
+            if (steps >= 3 && (steps - 3) % 2 == 0)
+            {
+                length -= gap; // Subtract gap every two steps after the third wall
             }
 
-            if (steps >= 3) {
-                length -= workingGap;
-            }
+            if (length <= gap)
+                return;
 
             DrawLine(currentX, currentY, length, direction);
 
@@ -52,11 +51,8 @@ namespace AlgritmySpirala {
                     break;
             }
 
+            // Update direction (90 degrees turn)
             direction = (direction + 1) % 4;
-
-            if (steps == 1) {
-                length -= workingGap;
-            }
 
             DrawSpiral(currentX, currentY, length, direction, steps + 1);
         }
